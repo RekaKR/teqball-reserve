@@ -19,6 +19,15 @@ async function  getUsers () {
     }
 }
 
+async function  getUserGroupes (googleId) {
+    try {
+        const user = await AuthEntity.findOne({googleId: googleId})
+        return  user.groups
+    } catch (error) {
+        console.log(`Could not fetch user ${error}`)
+    }
+}
+
 
 async function  insertUser (user) {
     try {
@@ -30,9 +39,23 @@ async function  insertUser (user) {
     }
 }
 
+async function  addNewGroup (googleId, groupId) {
+    try {
+        const user = await AuthEntity.findOneAndUpdate(
+            { googleId: googleId }, 
+            { $push: { groups: groupId  } },
+          )
+        return  user
+    } catch (error) {
+        console.log(`Could not fetch user ${error}`)
+    }
+}
+
 
 
 
 exports.getUser = getUser;
 exports.getUsers = getUsers;
 exports.insertUser = insertUser;
+exports.addNewGroup = addNewGroup;
+exports.getUserGroupes = getUserGroupes;

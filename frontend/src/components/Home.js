@@ -32,6 +32,26 @@ function Home({ setUser, user }) {
                     </Link>
                 </button>
             }
+            {
+                user &&
+                <button>
+                    <Link to='/groups'>
+                        Groups
+                    </Link>
+                </button>
+            }
+            {
+                user &&
+                <button>
+                    <Link to='/my-groups'>
+                        My groups
+                    </Link>
+                </button>
+            }
+            {
+                user &&
+                <span>Logged in as {user.name}</span>
+            }
         </div>
     )
 }

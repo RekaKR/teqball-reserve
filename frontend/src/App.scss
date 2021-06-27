@@ -1,0 +1,13 @@
+.group {
+  border: 1px solid black;
+  margin: 10px;
+  width: 30%;
+  .member {
+    display: grid;
+    grid-template-columns: 1fr 3fr 2fr;
+    .profile-picture {
+      border-radius: 50%;
+      width: 50px;
+    }
+  }
+}

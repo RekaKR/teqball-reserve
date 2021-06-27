@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import './App.css';
+import './App.scss';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import Home from './components/Home'
 import Login from './components/Login'
+import MyGroups from './components/MyGroups'
+import Groups from './components/Groups'
 import jwt_decode from 'jwt-decode'
 
 function App() {
@@ -32,6 +34,14 @@ function App() {
 
           <Route path='/login'>
             <Login checkToken={checkToken} />
+          </Route>
+
+          <Route path='/my-groups'>
+            <MyGroups user={user} />
+          </Route>
+
+          <Route path='/groups'>
+            <Groups user={user} />
           </Route>
 
         </Switch>

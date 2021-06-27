@@ -33,7 +33,7 @@ async function checkingLogin(req, res) {
 
 async function checkingUser(data, res) {
 
-    const { name, email, sub } = jwt_decode(data.id_token)
+    const { name, email, sub, picture } = jwt_decode(data.id_token)
 
     const foundUser = await AuthEntityService.getUser({ googleId: sub })
     if (!foundUser) {
@@ -41,7 +41,8 @@ async function checkingUser(data, res) {
             name: name,
             email: email,
             googleId: sub, 
-            role: "user"
+            groups: [],
+            picture: picture
         }
         await AuthEntityService.insertUser(newUser)
     }
@@ -49,7 +50,8 @@ async function checkingUser(data, res) {
         "google": sub,
         "name": name,
         "email": email, 
-        "role": "user"
+        "role": "user",
+        "picture": picture
     }, secret, { expiresIn: '1h' },
         function (err, token) {
             res.json({ token: token })

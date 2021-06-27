@@ -19,7 +19,9 @@ const authEntitySchema = Schema({
         required: true,
     },
 
-    role: {
+    groups: [String],
+
+    picture: {
         type: String,
         required: true,
     }
