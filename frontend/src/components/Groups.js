@@ -6,7 +6,7 @@ function Groups({ user }) {
     const [response, setResponse] = useState()
 
     useEffect(() => {
-
+        console.log("fut")
         axios
             .post("http://localhost:5000/api/groups/othergroups", { google: user.google })
             .then(resp => setGroups(resp.data))
@@ -21,7 +21,7 @@ function Groups({ user }) {
     return (
         <div>
             Groups
-            <div>
+            <div className="groups">
                 {
                     groups && groups.map((group, i) =>
                         <div key={i} className="group">

@@ -90,6 +90,18 @@ async function  updateMemberRole (groupId, googleId, groupRole ) {
     }
 }
 
+async function  addNewEvent (groupId, eventId) {
+    try {
+        const user = await Group.findOneAndUpdate(
+            { _id: groupId }, 
+            { $push: { events: eventId  } },
+          )
+        return  user
+    } catch (error) {
+        console.log(`Could not fetch user ${error}`)
+    }
+}
+
 
 exports.getGroups = getGroups;
 exports.getGroupById = getGroupById;
@@ -98,3 +110,4 @@ exports.getMyGroups = getMyGroups;
 exports.getOtherGroups = getOtherGroups;
 exports.insertMember = insertMember;
 exports.updateMemberRole = updateMemberRole;
+exports.addNewEvent = addNewEvent;

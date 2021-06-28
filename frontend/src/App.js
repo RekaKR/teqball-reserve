@@ -5,6 +5,7 @@ import Home from './components/Home'
 import Login from './components/Login'
 import MyGroups from './components/MyGroups'
 import Groups from './components/Groups'
+import MyAllEvent from './components/MyAllEvent'
 import jwt_decode from 'jwt-decode'
 
 function App() {
@@ -36,12 +37,17 @@ function App() {
             <Login checkToken={checkToken} />
           </Route>
 
+
+          <Route path='/groups'>
+            <Groups user={user} />
+          </Route>
+
           <Route path='/my-groups'>
             <MyGroups user={user} />
           </Route>
 
-          <Route path='/groups'>
-            <Groups user={user} />
+          <Route path='/my-all-event'>
+            <MyAllEvent user={user} />
           </Route>
 
         </Switch>

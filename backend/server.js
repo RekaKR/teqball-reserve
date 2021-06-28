@@ -6,6 +6,7 @@ const url = "mongodb://localhost:27017/"
 const loginRouter = require('./routes/LoginRoutes')
 const authEntityRoutes = require('./routes/AuthEntityRoutes')
 const groupRoutes = require('./routes/GroupRoutes')
+const eventRoutes = require('./routes/EventRoutes')
 
 
 
@@ -19,6 +20,7 @@ app.use(express.json())
 app.use('/api/login', loginRouter)
 app.use('/api/users', authEntityRoutes)
 app.use('/api/groups', groupRoutes)
+app.use('/api/events', eventRoutes)
 
 
 

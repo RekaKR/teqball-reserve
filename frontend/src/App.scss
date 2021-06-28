@@ -1,14 +1,26 @@
-.group {
-  border: 1px solid black;
-  margin: 10px;
-  width: 30%;
-  .member {
-    display: grid;
-    grid-template-columns: 1fr 3fr 1fr 2fr;
-    align-items: center;
-    .profile-picture {
-      border-radius: 50%;
-      width: 50px;
+.groups {
+  display: flex;
+  flex-wrap: wrap;
+  .group {
+    border: 1px solid black;
+    margin: 10px;
+    width: 600px;
+    .member {
+      display: grid;
+      grid-template-columns: 1fr 3fr 1fr 2fr;
+      align-items: center;
+      .profile-picture {
+        border-radius: 50%;
+        width: 50px;
+      }
+    }
+    .event {
+      border: solid 1px red;
+      margin: 5px;
+      .basic-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
     }
   }
 }

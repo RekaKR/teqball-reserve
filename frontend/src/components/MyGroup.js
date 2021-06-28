@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import NewEvent from './NewEvent'
+import Event from './Event'
 
 function MyGroup({ user, group, setNewRoleResponse }) {
     const [isAdmin, setIsAdmin] = useState()
+    const [isNewEvent, setIsNewEvent] = useState(false)
+    const [events, setEvents] = useState(false)
+    const [participationResponse, setParticipationResponse] = useState()
 
     useEffect(() => {
         group.members.find(mem => mem.googleId === user.google).groupRole === "admin"
             ? setIsAdmin(true)
             : setIsAdmin(false)
     }, [])
+
+    useEffect(() => {
+        axios
+            .get(`http://localhost:5000/api/events/${group._id}`)
+            .then(res => setEvents(res.data))
+    }, [isNewEvent, participationResponse])
 
     const changeRole = (e, googleId) => {
         const newRole = e.target.checked ? "admin" : "member"
@@ -24,8 +35,8 @@ function MyGroup({ user, group, setNewRoleResponse }) {
     return (
         <div className="group">
             <p>{group.name}</p>
-            <p>Members:</p>
             <div>
+                <p>Members:</p>
                 {group.members.map((member, index) =>
                     <div key="index" className="member">
                         <img src={member.picture} alt="profile" className="profile-picture" />
@@ -47,9 +58,23 @@ function MyGroup({ user, group, setNewRoleResponse }) {
                     </div>
                 )}
             </div>
-            {
-                isAdmin && <button>Create new event</button>
-            }
+            <div>
+                <p>Upcoming events: </p>
+                {
+                    isAdmin && <button onClick={() => setIsNewEvent(true)}>Create new event</button>
+                }
+                {
+                    isNewEvent && <NewEvent group={group} setIsNewEvent={setIsNewEvent} />
+                }
+                <div>
+                    {
+                        events && events.map(event =>
+                            <Event event={event} user={user} setParticipationResponse={setParticipationResponse}/>
+                        )
+                    }
+
+                </div>
+            </div>
         </div>
 
 

@@ -1,7 +1,6 @@
 const GroupService = require("../services/GroupService");
 const AuthEntityService = require("../services/AuthEntityService");
-
-
+const EventService = require("../services/EventService");
 
 
 async function getGroups(req, res) {
@@ -86,6 +85,15 @@ async function insertMember(req, res) {
             })
         }
         const updatedUser = await AuthEntityService.addNewGroup(data.google, data.groupId)
+
+        const newMember = {
+            googleId: data.google,
+            name: data.name,
+            email: data.email,
+            picture: data.picture,
+            participation: ""
+        }
+        await EventService.insertMember( data.groupId, newMember)
         res.json({ msg: "Group successfully updated!" })
     } catch (error) {
         res.status(500).json({ error: error })

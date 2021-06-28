@@ -14,15 +14,17 @@ const groupSchema = Schema({
         required: true,
     },
 
-    members:[
+    members: [
         {
             googleId: String,
             name: String,
+            email: String,
             groupRole: String,
             picture: String
         }
-    ]
+    ],
 
+    events: [String]
 });
 
 

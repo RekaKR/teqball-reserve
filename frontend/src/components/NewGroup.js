@@ -12,6 +12,7 @@ function NewGroup({ setIsNewGroup, user }) {
                 {
                     googleId: user.google,
                     name: user.name,
+                    email: user.email,
                     groupRole: "admin",
                     picture: user.picture
                 }

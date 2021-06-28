@@ -24,7 +24,7 @@ function MyGroups({ user }) {
                     isNewGroup && <NewGroup setIsNewGroup={setIsNewGroup} user={user} />
                 }
             </div>
-            <div>
+            <div className="groups">
                 {
                     groups && groups.map((group, i) =>
                         <MyGroup user={user} group={group}

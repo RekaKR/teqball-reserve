@@ -50,6 +50,14 @@ function Home({ setUser, user }) {
             }
             {
                 user &&
+                <button>
+                    <Link to='/my-all-event'>
+                        My all event
+                    </Link>
+                </button>
+            }
+            {
+                user &&
                 <span>Logged in as {user.name}</span>
             }
         </div>
