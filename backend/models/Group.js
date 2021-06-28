@@ -9,6 +9,11 @@ const groupSchema = Schema({
         required: true,
     },
 
+    creator: {
+        type: String,
+        required: true,
+    },
+
     members:[
         {
             googleId: String,

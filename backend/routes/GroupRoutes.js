@@ -12,7 +12,9 @@ router.post("/mygroups", GroupController.getMyGroups);
 
 router.post("/othergroups", GroupController.getOtherGroups);
 
-router.post("/update", GroupController.updateMembers);
+router.post("/insert-member", GroupController.insertMember);
+
+router.post("/update-member", GroupController.updateMemberRole);
 
 
 

@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import NewGroup from './NewGroup'
+import MyGroup from './MyGroup'
 
 function MyGroups({ user }) {
     const [isNewGroup, setIsNewGroup] = useState(false)
+    const [newRoleResponse, setNewRoleResponse] = useState()
     const [groups, setGroups] = useState()
 
     useEffect(() => {
         axios
             .post("http://localhost:5000/api/groups/mygroups", {google: user.google})
             .then(resp => setGroups(resp.data))
-    }, [isNewGroup])
+    }, [isNewGroup, newRoleResponse])
 
     return (
         <div>
@@ -23,22 +25,10 @@ function MyGroups({ user }) {
                 }
             </div>
             <div>
-                
                 {
                     groups && groups.map((group, i) =>
-                        <div key={i} className="group">
-                            <p>{group.name}</p>
-                            <p>Members:</p>
-                            <div>
-                                {group.members.map((member, index) => 
-                                    <div key="index" className="member">
-                                        <img src={member.picture} alt="profile" className="profile-picture"/>
-                                        <p>{member.name}</p>
-                                        <p>{member.groupRole}</p>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
+                        <MyGroup user={user} group={group}
+                        setNewRoleResponse={setNewRoleResponse}/>
                     )
                 }
             </div>

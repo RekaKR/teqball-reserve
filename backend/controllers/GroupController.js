@@ -11,7 +11,7 @@ async function getGroups(req, res) {
             res.status(400).json({
                 msg: 'Something went wrong!',
             })
-        } 
+        }
         res.json(groups)
     } catch (error) {
         res.status(500).json({ error: error })
@@ -31,7 +31,7 @@ async function getMyGroups(req, res) {
                 res.status(400).json({
                     msg: 'Something went wrong!',
                 })
-            } 
+            }
             res.json(myGroups)
         }
     } catch (error) {
@@ -48,7 +48,7 @@ async function getOtherGroups(req, res) {
             res.status(400).json({
                 msg: 'Something went wrong!',
             })
-        } 
+        }
         res.json(otherGroups)
     } catch (error) {
         res.status(500).json({ error: error })
@@ -56,7 +56,7 @@ async function getOtherGroups(req, res) {
 
 }
 
-async function insertGroup (req, res) {
+async function insertGroup(req, res) {
     try {
         const newGroup = req.body
         const group = await GroupService.insertGroup(newGroup)
@@ -64,29 +64,40 @@ async function insertGroup (req, res) {
             res.status(400).json({
                 msg: 'Something went wrong!',
             })
-        } 
+        }
         const googleId = group.members[0].googleId
         const groupId = group._id
         const updatedUser = await AuthEntityService.addNewGroup(googleId, groupId)
-         
-        res.json({msg: "New group successfully created!"})
+
+        res.json({ msg: "New group successfully created!" })
     } catch (error) {
         res.status(500).json({ error: error })
     }
 
 }
 
-async function updateMembers (req, res) {
+async function insertMember(req, res) {
     try {
         const data = req.body
-        const group = await GroupService.updateMembers(data)
+        const group = await GroupService.insertMember(data)
         if (!data) {
             res.status(400).json({
                 msg: 'Something went wrong!',
             })
-        } 
+        }
         const updatedUser = await AuthEntityService.addNewGroup(data.google, data.groupId)
-        res.json({msg: "Group successfully updated!"})
+        res.json({ msg: "Group successfully updated!" })
+    } catch (error) {
+        res.status(500).json({ error: error })
+    }
+
+}
+
+async function updateMemberRole(req, res) {
+    try {
+        const { groupId, googleId, groupRole } = req.body
+        await GroupService.updateMemberRole(groupId, googleId, groupRole )
+        res.json({ msg: "Group successfully updated!" })
     } catch (error) {
         res.status(500).json({ error: error })
     }
@@ -99,6 +110,7 @@ exports.getGroups = getGroups;
 exports.insertGroup = insertGroup;
 exports.getMyGroups = getMyGroups;
 exports.getOtherGroups = getOtherGroups;
-exports.updateMembers = updateMembers;
+exports.insertMember = insertMember;
+exports.updateMemberRole = updateMemberRole;
 
 

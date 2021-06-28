@@ -10,6 +10,15 @@ async function  getGroups () {
     }
 }
 
+async function  getGroupById (groupId) {
+    try {
+        const group = Group.findOne({_id: groupId})
+        return  group
+    } catch (error) {
+        console.log(`Could not fetch group ${error}`)
+    }
+}
+
 async function  getMyGroups (groups) {
     try {
         const query = {
@@ -51,7 +60,7 @@ async function  insertGroup (group) {
     }
 }
 
-async function  updateMembers (data) {
+async function  insertMember (data) {
     try {
         const group = await Group.findOneAndUpdate(
             { _id: data.groupId }, 
@@ -68,9 +77,24 @@ async function  updateMembers (data) {
     }
 }
 
+async function  updateMemberRole (groupId, googleId, groupRole ) {
+    
+    try {
+        const updatedGroup = await Group.updateOne(
+            {$and: [{_id: groupId}, {'members.googleId': googleId}]}, 
+            {$set: {'members.$.groupRole': groupRole }}
+          )
+        return  updatedGroup
+    } catch (error) {
+        console.log(`Could not fetch group ${error}`)
+    }
+}
+
 
 exports.getGroups = getGroups;
+exports.getGroupById = getGroupById;
 exports.insertGroup = insertGroup;
 exports.getMyGroups = getMyGroups;
 exports.getOtherGroups = getOtherGroups;
-exports.updateMembers = updateMembers;
+exports.insertMember = insertMember;
+exports.updateMemberRole = updateMemberRole;

@@ -14,7 +14,7 @@ function Groups({ user }) {
 
     const updateMembers = (groupId) => {
         axios
-        .post("http://localhost:5000/api/groups/update", {...user, groupId: groupId})
+        .post("http://localhost:5000/api/groups/insert-member", {...user, groupId: groupId})
         .then(res => setResponse(res.data))
     }
 

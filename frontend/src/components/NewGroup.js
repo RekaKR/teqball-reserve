@@ -7,11 +7,12 @@ function NewGroup({ setIsNewGroup, user }) {
     const createNewGroup = () => {
         const newGroup = {
             name: name,
+            creator: user.google,
             members: [
                 {
                     googleId: user.google,
                     name: user.name,
-                    groupRole: "member",
+                    groupRole: "admin",
                     picture: user.picture
                 }
             ]
