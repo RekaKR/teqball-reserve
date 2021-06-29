@@ -5,11 +5,7 @@ function Event({ event, user, setParticipationResponse }) {
     const [isShowMore, setIsShowMore] = useState(false)
 
     const saveParticipation = (e) => {
-        const participation = e.target.value === "accept"
-            ? "accepted"
-            : e.target.value 
-                ? "denied"
-                : ""
+        const participation = e.target.value
         axios
             .post("http://localhost:5000/api/events/update-participation", {
                 eventId: event._id,
@@ -23,6 +19,15 @@ function Event({ event, user, setParticipationResponse }) {
             .then(res => setParticipationResponse(res.data))
     }
 
+    const checkDefaultValue = (value) => {
+        const actualUser = event.members.find(member => member.googleId === user.google)
+        if (actualUser.participation === value) {
+            return true
+        } else {
+            return false
+        }
+    }
+
     return (
         <div className="event">
             <div className="basic-info">
@@ -31,17 +36,20 @@ function Event({ event, user, setParticipationResponse }) {
                 <p>{event.date.slice(0, 10)}  {event.date.slice(11, 16)}</p>
                 <div>
                     <label htmlFor="accept">Accept: </label>
-                    <input type="radio" value="accept"
+                    <input type="radio" value="accepted"
                         name="participation" id="accept"
-                        onChange={saveParticipation} />
+                        onChange={saveParticipation} 
+                        defaultChecked={checkDefaultValue("accepted")}/>
                     <label htmlFor="deny">Deny: </label>
-                    <input type="radio" value="deny"
+                    <input type="radio" value="denied"
                         name="participation" id="deny"
-                        onChange={saveParticipation} />
+                        onChange={saveParticipation} 
+                        defaultChecked={checkDefaultValue("denied")}/>
                     <label htmlFor="deny">I dont know: </label>
                     <input type="radio" value=""
                         name="participation" id="deny"
-                        onChange={saveParticipation} />
+                        onChange={saveParticipation} 
+                        defaultChecked={checkDefaultValue("")}/>
                 </div>
                 <button
                     onClick={() => setIsShowMore(!isShowMore)}>
