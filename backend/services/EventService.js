@@ -11,7 +11,7 @@ async function getEventsByGroupId(groupId) {
 }
 
 async function getEventsByGoogleId(googleId) {
-    console.log(googleId)
+    
     try {
         const events = Event.find({ 'members.googleId': googleId })
         return events
@@ -68,8 +68,6 @@ async function removeMember(groupId, googleId) {
         console.log(`Could not fetch event ${error}`)
     }
 }
-
-
 
 
 exports.getEventsByGroupId = getEventsByGroupId;

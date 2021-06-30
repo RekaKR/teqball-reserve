@@ -47,14 +47,15 @@ async function insertEvent(req, res) {
             })
         } else {
             const updatedGroup = await GroupService.addNewEvent(event.groupId, newEvent._id)
-            const resp = await createGoogleEvent(req.body, res)
+            console.log(updatedGroup)
+            const resp = await createGoogleEvent(req.body, updatedGroup.calendarId, res)
         }
     } catch (error) {
         res.status(500).json({ error: error })
     }
 }
 
-async function createGoogleEvent(data, res) {
+async function createGoogleEvent(data, calendarId, res) {
 
     oAuth2Client.setCredentials({ refresh_token: data.refresh_token });
 
@@ -95,7 +96,7 @@ async function createGoogleEvent(data, res) {
    calendar.events.insert({
         auth: oAuth2Client,
         sendUpdates: "all",
-        calendarId: 'primary',
+        calendarId: calendarId,
         resource: newEvent,
     }, function (err, event) {
 

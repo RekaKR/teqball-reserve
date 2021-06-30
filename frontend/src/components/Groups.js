@@ -5,6 +5,7 @@ function Groups({ user }) {
     const [groups, setGroups] = useState()
     const [response, setResponse] = useState()
 
+
     useEffect(() => {
         axios
             .post("http://localhost:5000/api/groups/othergroups", { google: user.google })
@@ -14,13 +15,22 @@ function Groups({ user }) {
     const updateMembers = (groupId) => {
         axios
         .post("http://localhost:5000/api/groups/insert-member", {...user, groupId: groupId})
-        .then(res => setResponse(res.data))
+        .then(res => {
+            setResponse("Check your email.")
+            setTimeout(() => {
+                setResponse("")
+            }, 3000)
+        })
     }
 
     return (
         <div>
             Groups
             <div className="groups">
+                {
+                    response &&
+                    <p>{response}</p>
+                }
                 {
                     groups && groups.map((group, i) =>
                         <div key={i} className="group">

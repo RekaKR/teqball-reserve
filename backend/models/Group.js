@@ -14,6 +14,16 @@ const groupSchema = Schema({
         required: true,
     },
 
+    refresh_token: {
+        type: String,
+        required: true,
+    },
+
+    calendarId: {
+        type: String,
+        required: true,
+    },
+
     members: [
         {
             googleId: String,

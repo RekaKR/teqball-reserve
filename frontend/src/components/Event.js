@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import GoogleMap from './GoogleMap'
 
 function Event({ event, user, setParticipationResponse }) {
     const [isShowMore, setIsShowMore] = useState(false)
+    const [showMap, setShowMap] = useState(false)
 
 
     const saveParticipation = (e) => {
@@ -34,7 +36,14 @@ function Event({ event, user, setParticipationResponse }) {
         <div className="event" key={event._id}>
             <div className="basic-info">
                 <p>{event.title}</p>
-                <p>{event.venue}</p>
+                <p>
+                    {event.venue} 
+                    <button onClick={() => setShowMap(true)}>Térkép</button>
+                </p>
+                {
+                    showMap &&
+                    <GoogleMap setShowMap={setShowMap} venue={event.venue}/>
+                }
                 <p>{event.date.slice(0, 10)}  {event.date.slice(11, 16)}</p>
                 <div>
                     <label htmlFor="accept">Accept: </label>

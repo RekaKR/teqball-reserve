@@ -3,8 +3,10 @@ import axios from 'axios'
 
 function NewGroup({ setIsNewGroup, user }) {
     const [name, setName] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
 
     const createNewGroup = () => {
+        setIsLoading(true)
         const newGroup = {
             name: name,
             creator: user.google,
@@ -20,11 +22,14 @@ function NewGroup({ setIsNewGroup, user }) {
         }
 
         axios
-        .post("http://localhost:5000/api/groups", newGroup)
-        .then((res) => {
-            setIsNewGroup(false)
-        })
-        .catch(error => console.log(error))
+            .post("http://localhost:5000/api/groups", {
+                ...newGroup, refresh_token: user.refresh_token
+            })
+            .then((res) => {
+                setIsNewGroup(false)
+                setIsLoading(false)
+            })
+            .catch(error => console.log(error))
     }
 
     return (
@@ -34,7 +39,10 @@ function NewGroup({ setIsNewGroup, user }) {
                 <input type="text" id="name" onChange={(e) => setName(e.target.value)} />
             </div>
             <div>
-                <button onClick={createNewGroup}>Create</button>
+                <button onClick={createNewGroup}
+                    disabled={isLoading}
+                >Create
+                </button>
             </div>
         </div>
     )
