@@ -26,7 +26,7 @@ function MyGroups({ user }) {
             </div>
             <div className="groups">
                 {
-                    groups && groups.map((group, i) =>
+                    groups && groups.reverse().map((group, i) =>
                         <MyGroup user={user} group={group}
                         setNewRoleResponse={setNewRoleResponse}/>
                     )

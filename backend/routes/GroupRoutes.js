@@ -8,6 +8,8 @@ router.get("/", GroupController.getGroups);
 
 router.post("/", GroupController.insertGroup);
 
+router.post("/quit", GroupController.quitGroup);
+
 router.post("/mygroups", GroupController.getMyGroups);
 
 router.post("/othergroups", GroupController.getOtherGroups);

@@ -3,44 +3,52 @@ const secret = 'supersecret'
 const AuthEntityService = require("../services/AuthEntityService");
 const fetch = require('node-fetch')
 const jwt_decode = require("jwt-decode");
+const { google } = require('googleapis');
 
+const SCOPES = [
+    "https://www.googleapis.com/auth/calendar",
+    "https://www.googleapis.com/auth/userinfo.profile",
+    "https://www.googleapis.com/auth/userinfo.email",
+    "openid",
+];
+
+const oAuth2Client = new google.auth.OAuth2(
+    "645622545318-54bkra0rued7ajsn83sj3rdh0nik2fk9.apps.googleusercontent.com", "Kg3RyJ3wWM3Vj6qAhbEROwkF", 'http://localhost:3000/login'
+);
+
+async function googleSetup(req, res) {
+
+    const authUrl = oAuth2Client.generateAuthUrl({
+        access_type: 'offline',
+        scope: SCOPES
+    });
+
+    res.send({ url: authUrl })
+}
 
 async function checkingLogin(req, res) {
     const code = req.body.code
 
-    const fetchOptions = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body:
-            new URLSearchParams({
-                'code': code,
-                'client_id': '645622545318-54bkra0rued7ajsn83sj3rdh0nik2fk9.apps.googleusercontent.com',
-                'client_secret': 'Kg3RyJ3wWM3Vj6qAhbEROwkF',
-                'redirect_uri': 'http://localhost:3000/login',
-                'grant_type': 'authorization_code'
-            })
-    }
-    fetch("https://oauth2.googleapis.com/token", fetchOptions)
-        .then(res => res.json())
-        .then(token => checkingUser(token, res))
-        .catch(error => res.status(404).json({
-            msg: 'Authentication failed!',
-        }))
+    oAuth2Client.getToken(code, (err, token) => {
+        if (err) return console.error('Error retrieving access token', err);
+
+        oAuth2Client.setCredentials({ refresh_token: token.refresh_token });
+
+        checkingUser(token, res)
+    });
 
 }
 
-async function checkingUser(data, res) {
+async function checkingUser(token, res) {
 
-    const { name, email, sub, picture } = jwt_decode(data.id_token)
+    const { name, email, sub, picture } = jwt_decode(token.id_token)
 
     const foundUser = await AuthEntityService.getUser({ googleId: sub })
     if (!foundUser) {
         const newUser = {
             name: name,
             email: email,
-            googleId: sub, 
+            googleId: sub,
             groups: [],
             picture: picture
         }
@@ -49,9 +57,9 @@ async function checkingUser(data, res) {
     jwt.sign({
         "google": sub,
         "name": name,
-        "email": email, 
-        "role": "user",
-        "picture": picture
+        "email": email,
+        "picture": picture,
+        "refresh_token": token.refresh_token
     }, secret, { expiresIn: '1h' },
         function (err, token) {
             res.json({ token: token })
@@ -60,6 +68,7 @@ async function checkingUser(data, res) {
 
 
 
+exports.googleSetup = googleSetup;
 exports.checkingLogin = checkingLogin;
 exports.secret = secret;
 

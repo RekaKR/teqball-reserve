@@ -3,11 +3,13 @@ import axios from 'axios'
 import NewEvent from './NewEvent'
 import Event from './Event'
 
+
 function MyGroup({ user, group, setNewRoleResponse }) {
     const [isAdmin, setIsAdmin] = useState()
     const [isNewEvent, setIsNewEvent] = useState(false)
     const [events, setEvents] = useState(false)
     const [participationResponse, setParticipationResponse] = useState()
+
 
     useEffect(() => {
         group.members.find(mem => mem.googleId === user.google).groupRole === "admin"
@@ -30,6 +32,15 @@ function MyGroup({ user, group, setNewRoleResponse }) {
                 groupRole: newRole
             })
             .then(res => setNewRoleResponse(res.data))
+    }
+
+    const quitGroup = () => {
+        axios
+        .post("http://localhost:5000/api/groups/quit", {
+            groupId: group._id,
+            googleId: user.google,
+        })
+        .then(res => setNewRoleResponse(res.data))
     }
 
     return (
@@ -57,6 +68,10 @@ function MyGroup({ user, group, setNewRoleResponse }) {
                         }
                     </div>
                 )}
+                <button onClick={quitGroup}
+                disabled={group.creator === user.google 
+                    ? true : false}
+                >Quit group</button>
             </div>
             <div>
                 <p>Upcoming events: </p>
@@ -64,15 +79,22 @@ function MyGroup({ user, group, setNewRoleResponse }) {
                     isAdmin && <button onClick={() => setIsNewEvent(true)}>Create new event</button>
                 }
                 {
-                    isNewEvent && <NewEvent group={group} setIsNewEvent={setIsNewEvent} />
+                    isNewEvent && <NewEvent
+                        group={group} user={user}
+                        setIsNewEvent={setIsNewEvent}
+                    />
                 }
                 <div>
                     {
-                        events && events.map(event =>
-                            <Event event={event} user={user} setParticipationResponse={setParticipationResponse}/>
+                        events &&
+                        events.filter(event => new Date(event.date) > new Date())
+                        .sort((a, b) => new Date(b.date) - new Date(a.date))
+                        .map(event =>
+                            <Event event={event} user={user}
+                                setParticipationResponse={setParticipationResponse}
+                            />
                         )
                     }
-
                 </div>
             </div>
         </div>

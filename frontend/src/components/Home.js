@@ -10,9 +10,11 @@ function Home({ setUser, user }) {
         setUser("")
     }
 
-     const googleSignIn = () => {
-        window.location.href =
-          "https://accounts.google.com/o/oauth2/v2/auth?response_type=code&prompt=select_account&client_id=645622545318-54bkra0rued7ajsn83sj3rdh0nik2fk9.apps.googleusercontent.com&scope=openid%20profile email&redirect_uri=http%3A//localhost:3000/login"
+     const googleSignIn = async () => {
+        const response = await fetch("http://localhost:5000/api/login")
+        const serverResponse = await response.json()
+    
+        window.location.href = serverResponse.url
      }
 
     return (

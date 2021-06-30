@@ -75,6 +75,29 @@ async function insertGroup(req, res) {
 
 }
 
+async function quitGroup(req, res) {
+    try {
+        const groupId = req.body.groupId
+        const googleId = req.body.googleId
+
+        const group = await GroupService.deleteGroupMember(groupId, googleId)
+        if (!group) {
+            res.status(400).json({
+                msg: 'Something went wrong!',
+            })
+        }
+
+        const updatedUser = await AuthEntityService.removeGroup(googleId, groupId)
+
+        const updateEvents = await EventService.removeMember(groupId, googleId)
+
+        res.json({ msg: "Update was successful." })
+    } catch (error) {
+        res.status(500).json({ error: error })
+    }
+
+}
+
 async function insertMember(req, res) {
     try {
         const data = req.body
@@ -118,6 +141,7 @@ exports.getGroups = getGroups;
 exports.insertGroup = insertGroup;
 exports.getMyGroups = getMyGroups;
 exports.getOtherGroups = getOtherGroups;
+exports.quitGroup = quitGroup;
 exports.insertMember = insertMember;
 exports.updateMemberRole = updateMemberRole;
 

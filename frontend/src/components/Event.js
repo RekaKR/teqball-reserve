@@ -4,6 +4,7 @@ import axios from 'axios'
 function Event({ event, user, setParticipationResponse }) {
     const [isShowMore, setIsShowMore] = useState(false)
 
+
     const saveParticipation = (e) => {
         const participation = e.target.value
         axios
@@ -21,6 +22,7 @@ function Event({ event, user, setParticipationResponse }) {
 
     const checkDefaultValue = (value) => {
         const actualUser = event.members.find(member => member.googleId === user.google)
+
         if (actualUser.participation === value) {
             return true
         } else {
@@ -29,7 +31,7 @@ function Event({ event, user, setParticipationResponse }) {
     }
 
     return (
-        <div className="event">
+        <div className="event" key={event._id}>
             <div className="basic-info">
                 <p>{event.title}</p>
                 <p>{event.venue}</p>
@@ -37,19 +39,19 @@ function Event({ event, user, setParticipationResponse }) {
                 <div>
                     <label htmlFor="accept">Accept: </label>
                     <input type="radio" value="accepted"
-                        name="participation" id="accept"
-                        onChange={saveParticipation} 
-                        defaultChecked={checkDefaultValue("accepted")}/>
+                        name={event._id} id="accept"
+                        onChange={saveParticipation}
+                        defaultChecked={checkDefaultValue("accepted")} />
                     <label htmlFor="deny">Deny: </label>
                     <input type="radio" value="denied"
-                        name="participation" id="deny"
-                        onChange={saveParticipation} 
-                        defaultChecked={checkDefaultValue("denied")}/>
+                        name={event._id} id="deny"
+                        onChange={saveParticipation}
+                        defaultChecked={checkDefaultValue("denied")} />
                     <label htmlFor="deny">I dont know: </label>
                     <input type="radio" value=""
-                        name="participation" id="deny"
-                        onChange={saveParticipation} 
-                        defaultChecked={checkDefaultValue("")}/>
+                        name={event._id} id="deny"
+                        onChange={saveParticipation}
+                        defaultChecked={checkDefaultValue("")} />
                 </div>
                 <button
                     onClick={() => setIsShowMore(!isShowMore)}>
@@ -59,25 +61,30 @@ function Event({ event, user, setParticipationResponse }) {
             {
                 isShowMore &&
                 <div className="details">
-                    <p>{event.description}</p>
+                    <div>
+                        <p>Description: </p>
+                        <p>{event.description}</p>
+                    </div>
                     <p>Accepted: </p>
                     {
                         event.members.filter(member => member.participation === "accepted")
                             .map(member =>
-                                <>
-                                    <img src={member.picture} alt="profile" />
+                                <div className="member">
+                                    <img src={member.picture} alt="profile"
+                                        className="profile-picture" />
                                     <p>{member.name}</p>
-                                </>
+                                </div>
                             )
                     }
                     <p>Denied: </p>
                     {
                         event.members.filter(member => member.participation === "denied")
                             .map(member =>
-                                <>
-                                    <img src={member.picture} alt="profile" />
+                                <div className="member">
+                                    <img src={member.picture} alt="profile"
+                                        className="profile-picture" />
                                     <p>{member.name}</p>
-                                </>
+                                </div>
                             )
                     }
                 </div>

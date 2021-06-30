@@ -51,6 +51,18 @@ async function  addNewGroup (googleId, groupId) {
     }
 }
 
+async function  removeGroup (googleId, groupId) {
+    try {
+        const user = await AuthEntity.updateOne(
+            { googleId: googleId }, 
+            { $pull: { groups: groupId  } },
+          )
+        return  user
+    } catch (error) {
+        console.log(`Could not fetch user ${error}`)
+    }
+}
+
 
 
 
@@ -59,3 +71,4 @@ exports.getUsers = getUsers;
 exports.insertUser = insertUser;
 exports.addNewGroup = addNewGroup;
 exports.getUserGroupes = getUserGroupes;
+exports.removeGroup = removeGroup;

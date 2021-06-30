@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import Event from './Event'
 
-function MyAllEvent ({user}) {
+function MyAllEvent({ user }) {
     const [events, setEvents] = useState()
-    console.log(`http://localhost:5000/api/events/${user.google}`)
+    const [participationResponse, setParticipationResponse] = useState()
 
     useEffect(() => {
-        console.log("fut")
         axios
             .get(`http://localhost:5000/api/events/byId/${user.google}`)
             .then(res => setEvents(res.data))
-    }, [])
+    }, [participationResponse])
 
     return (
         <div>
-            <p>Hello</p>
+            <p>My events</p>
             {
                 events &&
-                events.map((event, i) => 
-                    <div>
-                        {event.title}
-                    </div>
+                events.sort((a, b) => new Date(b.date) - new Date(a.date))
+                .map((event, i) =>
+                    <Event event={event} user={user} 
+                    setParticipationResponse={setParticipationResponse}/>
                 )
             }
         </div>

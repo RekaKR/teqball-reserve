@@ -4,7 +4,9 @@ const LoginController = require("../controllers/LoginController");
 
 
 
-router.post("/", LoginController.checkingLogin);
+router.get("/", LoginController.googleSetup);
+
+router.post("/check", LoginController.checkingLogin);
 
 
 

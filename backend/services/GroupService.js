@@ -67,9 +67,22 @@ async function  insertMember (data) {
             { $push: { members: {
                 googleId: data.google,
                 name: data.name,
+                email: data.email,
                 groupRole: "member",
                 picture: data.picture
             } } },
+          )
+        return  group
+    } catch (error) {
+        console.log(`Could not fetch group ${error}`)
+    }
+}
+
+async function  deleteGroupMember (groupId, googleId) {
+    try {
+        const group = await Group.updateOne(
+            { _id: groupId }, 
+            { $pull: { members: { googleId: googleId } } },
           )
         return  group
     } catch (error) {
@@ -109,5 +122,6 @@ exports.insertGroup = insertGroup;
 exports.getMyGroups = getMyGroups;
 exports.getOtherGroups = getOtherGroups;
 exports.insertMember = insertMember;
+exports.deleteGroupMember = deleteGroupMember;
 exports.updateMemberRole = updateMemberRole;
 exports.addNewEvent = addNewEvent;

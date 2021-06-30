@@ -10,7 +10,7 @@ function Login ({checkToken}) {
         const code = url.searchParams.get('code')
 
         axios
-        .post("http://localhost:5000/api/login", {code})
+        .post("http://localhost:5000/api/login/check", {code})
         .then((res) => {
             localStorage.setItem('token', res.data.token)
             history.push("/");
