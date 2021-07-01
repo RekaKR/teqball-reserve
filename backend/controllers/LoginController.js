@@ -20,7 +20,8 @@ async function googleSetup(req, res) {
 
     const authUrl = oAuth2Client.generateAuthUrl({
         access_type: 'offline',
-        scope: SCOPES
+        scope: SCOPES,
+        prompt: "select_account"
     });
 
     res.send({ url: authUrl })

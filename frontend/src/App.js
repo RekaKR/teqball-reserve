@@ -11,6 +11,17 @@ import jwt_decode from 'jwt-decode'
 function App() {
   const [user, setUser] = useState("")
 
+  console.log(user)
+
+  const getToken = () => {
+    return {
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    }
+  }
+
   const checkToken = () => {
     const token = localStorage.getItem("token")
     if (token) {
@@ -39,15 +50,27 @@ function App() {
 
 
           <Route path='/groups'>
-            <Groups user={user} />
+            {
+              user
+                ? <Groups user={user} getToken={getToken} />
+                : <Redirect to='/' />
+            }
           </Route>
 
           <Route path='/my-groups'>
-            <MyGroups user={user} />
+            {
+              user
+                ? <MyGroups user={user} getToken={getToken} />
+                : <Redirect to='/' />
+            }
           </Route>
 
           <Route path='/my-all-event'>
-            <MyAllEvent user={user} />
+            {
+              user
+                ? <MyAllEvent user={user} getToken={getToken} />
+                : <Redirect to='/' />
+            }
           </Route>
 
         </Switch>

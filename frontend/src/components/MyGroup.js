@@ -4,7 +4,7 @@ import NewEvent from './NewEvent'
 import Event from './Event'
 
 
-function MyGroup({ user, group, setNewRoleResponse }) {
+function MyGroup({ user, group, setNewRoleResponse, getToken }) {
     const [isAdmin, setIsAdmin] = useState()
     const [isNewEvent, setIsNewEvent] = useState(false)
     const [events, setEvents] = useState(false)
@@ -19,7 +19,7 @@ function MyGroup({ user, group, setNewRoleResponse }) {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:5000/api/events/${group._id}`)
+            .get(`http://localhost:5000/api/events/${group._id}`, getToken())
             .then(res => setEvents(res.data))
     }, [isNewEvent, participationResponse])
 
@@ -30,7 +30,7 @@ function MyGroup({ user, group, setNewRoleResponse }) {
                 groupId: group._id,
                 googleId: googleId,
                 groupRole: newRole
-            })
+            }, getToken())
             .then(res => setNewRoleResponse(res.data))
     }
 
@@ -39,7 +39,7 @@ function MyGroup({ user, group, setNewRoleResponse }) {
         .post("http://localhost:5000/api/groups/quit", {
             groupId: group._id,
             googleId: user.google,
-        })
+        }, getToken())
         .then(res => setNewRoleResponse(res.data))
     }
 
@@ -60,8 +60,7 @@ function MyGroup({ user, group, setNewRoleResponse }) {
                                 <input type="checkbox" name="admin" id="admin"
                                     defaultChecked={member.groupRole === "admin" ? true : false}
                                     onChange={(e) => changeRole(e, member.googleId)}
-                                    disabled={group.creator === user.google &&
-                                        member.googleId === user.google
+                                    disabled={group.creator === member.googleId 
                                         ? true : false}
                                 />
                             </div>
@@ -82,6 +81,7 @@ function MyGroup({ user, group, setNewRoleResponse }) {
                     isNewEvent && <NewEvent
                         group={group} user={user}
                         setIsNewEvent={setIsNewEvent}
+                        getToken={getToken}
                     />
                 }
                 <div>
@@ -92,6 +92,7 @@ function MyGroup({ user, group, setNewRoleResponse }) {
                         .map(event =>
                             <Event event={event} user={user}
                                 setParticipationResponse={setParticipationResponse}
+                                getToken={getToken}
                             />
                         )
                     }

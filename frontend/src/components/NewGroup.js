@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 
-function NewGroup({ setIsNewGroup, user }) {
+function NewGroup({ setIsNewGroup, user, getToken }) {
     const [name, setName] = useState("")
     const [isLoading, setIsLoading] = useState(false)
 
@@ -24,7 +24,7 @@ function NewGroup({ setIsNewGroup, user }) {
         axios
             .post("http://localhost:5000/api/groups", {
                 ...newGroup, refresh_token: user.refresh_token
-            })
+            }, getToken())
             .then((res) => {
                 setIsNewGroup(false)
                 setIsLoading(false)

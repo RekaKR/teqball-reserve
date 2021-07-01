@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import GoogleMap from './GoogleMap'
 
-function Event({ event, user, setParticipationResponse }) {
+function Event({ event, user, setParticipationResponse, getToken }) {
     const [isShowMore, setIsShowMore] = useState(false)
     const [showMap, setShowMap] = useState(false)
 
@@ -18,7 +18,7 @@ function Event({ event, user, setParticipationResponse }) {
                     name: user.name,
                     picture: user.picture
                 }
-            })
+            }, getToken())
             .then(res => setParticipationResponse(res.data))
     }
 

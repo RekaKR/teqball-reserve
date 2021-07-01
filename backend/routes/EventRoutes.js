@@ -1,18 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const EventController = require("../controllers/EventController");
+const verifyToken = require('../verifyToken')
 
 
 
-router.get("/:groupId", EventController.getEventsByGroupId);
+router.get("/:groupId", verifyToken, EventController.getEventsByGroupId);
 
-router.get("/byId/:googleId",EventController.getEventsByGoogleId);
+router.get("/byId/:googleId", verifyToken, EventController.getEventsByGoogleId);
 
-router.post("/insert", EventController.insertEvent);
+router.post("/insert", verifyToken, EventController.insertEvent);
 
-router.post("/update-participation", EventController.updateParticipation);
+router.post("/update-participation", verifyToken, EventController.updateParticipation);
 
-//router.post("/update-member", GroupController.updateMemberRole);
+
 
 
 

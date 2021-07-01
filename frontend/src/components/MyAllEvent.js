@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Event from './Event'
 
-function MyAllEvent({ user }) {
+function MyAllEvent({ user, getToken }) {
     const [events, setEvents] = useState()
     const [participationResponse, setParticipationResponse] = useState()
 
     useEffect(() => {
         axios
-            .get(`http://localhost:5000/api/events/byId/${user.google}`)
+            .get(`http://localhost:5000/api/events/byId/${user.google}`, getToken())
             .then(res => setEvents(res.data))
     }, [participationResponse])
 

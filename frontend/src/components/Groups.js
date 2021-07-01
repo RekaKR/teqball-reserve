@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-function Groups({ user }) {
+function Groups({ user, getToken }) {
     const [groups, setGroups] = useState()
     const [response, setResponse] = useState()
 
-
     useEffect(() => {
         axios
-            .post("http://localhost:5000/api/groups/othergroups", { google: user.google })
+            .post("http://localhost:5000/api/groups/othergroups",  { google: user.google }, getToken())
             .then(resp => setGroups(resp.data))
     }, [response])
 
     const updateMembers = (groupId) => {
         axios
-        .post("http://localhost:5000/api/groups/insert-member", {...user, groupId: groupId})
+        .post("http://localhost:5000/api/groups/insert-member", {...user, groupId: groupId}, getToken())
         .then(res => {
             setResponse("Check your email.")
             setTimeout(() => {

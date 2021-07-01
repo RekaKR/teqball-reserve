@@ -1,22 +1,25 @@
 const express = require("express");
 const router = express.Router();
 const GroupController = require("../controllers/GroupController");
+const verifyToken = require('../verifyToken')
 
 
 
-router.get("/", GroupController.getGroups);
+//router.get("/", GroupController.getGroups);
 
-router.post("/", GroupController.insertGroup);
+router.post("/", verifyToken, GroupController.insertGroup);
 
-router.post("/quit", GroupController.quitGroup);
+router.post("/quit", verifyToken, GroupController.quitGroup);
 
-router.post("/mygroups", GroupController.getMyGroups);
+router.post("/mygroups", verifyToken, GroupController.getMyGroups);
 
-router.post("/othergroups", GroupController.getOtherGroups);
+router.post("/othergroups", verifyToken, GroupController.getOtherGroups);
 
-router.post("/insert-member", GroupController.insertMember);
+router.post("/insert-member", verifyToken, GroupController.insertMember);
 
-router.post("/update-member", GroupController.updateMemberRole);
+router.post("/update-member", verifyToken, GroupController.updateMemberRole);
+
+
 
 
 

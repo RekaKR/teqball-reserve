@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-function NewEvent ({group, user, setIsNewEvent}) {
+function NewEvent ({group, user, setIsNewEvent, getToken}) {
     const [event, setEvent] = useState({})
 
     const handleChange = (e) => {
@@ -20,7 +20,7 @@ function NewEvent ({group, user, setIsNewEvent}) {
             event: newEvent
         }
         axios
-            .post("http://localhost:5000/api/events/insert", data)
+            .post("http://localhost:5000/api/events/insert", data, getToken())
             .then(res => { 
                 setIsNewEvent(false)
             })

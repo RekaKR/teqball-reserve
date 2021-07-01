@@ -63,7 +63,7 @@ async function insertGroup(req, res) {
     try {
         const newGroup = req.body
         const refresh_token = newGroup.refresh_token
-        console.log(newGroup.name)
+
         const calendarId = await createGoogleGroup(newGroup.name, refresh_token)
 
         const groupToInsert = { ...newGroup, calendarId }
@@ -133,7 +133,7 @@ async function insertMember(req, res) {
     try {
         const data = req.body
         const group = await GroupService.insertMember(data)
-        console.log(group)
+
         if (!data) {
             res.status(400).json({
                 msg: 'Something went wrong!',
