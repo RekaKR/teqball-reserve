@@ -11,7 +11,6 @@ import jwt_decode from 'jwt-decode'
 function App() {
   const [user, setUser] = useState("")
 
-  console.log(user)
 
   const getToken = () => {
     return {

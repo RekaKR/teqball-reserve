@@ -56,7 +56,6 @@ async function getOtherGroups(req, res) {
     } catch (error) {
         res.status(500).json({ error: error })
     }
-
 }
 
 async function insertGroup(req, res) {

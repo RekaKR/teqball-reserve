@@ -25,3 +25,22 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+.mapouter {
+  position: relative;
+  text-align: right;
+  height: 300px;
+  width: 400px;
+  margin: 20px 0;
+}
+.gmap_canvas {
+  overflow: hidden;
+  background: none !important;
+  height: 300px;
+  width: 400px;
+}
+
+#gmap_canvas {
+  height: 300px;
+  width: 400px;
+}
