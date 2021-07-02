@@ -15,7 +15,7 @@ function MyAllEvent({ user, getToken }) {
 
   return (
     <div>
-      <p>My events</p>
+      <h2>My events</h2>
 
       {
         events &&

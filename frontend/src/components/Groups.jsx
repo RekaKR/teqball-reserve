@@ -25,7 +25,8 @@ function Groups({ user, getToken }) {
 
   return (
     <div>
-      Groups
+      <h2>Groups</h2>
+
       <div className="groups">
         {response && <p>{response}</p>}
 

@@ -8,6 +8,12 @@ body {
   background-color: $bacgroundColor;
   border: 1px solid black;
 
+  h1,
+  h2,
+  h3,
+  p {
+    color: $textColor;
+  }
   /*
   h1 {
     color: $textColor;
@@ -70,6 +76,20 @@ body {
     
     h2 {
       margin: 30px 0 20px;
+    }
+
+    p {
+      max-width: 90%;
+      text-align: justify;
+    }
+  }
+
+  .login {
+    h1 {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
   }
 }

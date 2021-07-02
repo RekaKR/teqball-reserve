@@ -54,7 +54,7 @@ function App() {
             {
               user
                 ? <Groups user={user} getToken={getToken} />
-                : <Redirect to='/' />
+                : <Redirect to='/home' />
             }
           </Route>
 
@@ -62,7 +62,7 @@ function App() {
             {
               user
                 ? <MyGroups user={user} getToken={getToken} />
-                : <Redirect to='/' />
+                : <Redirect to='/home' />
             }
           </Route>
 
@@ -70,7 +70,7 @@ function App() {
             {
               user
                 ? <MyAllEvent user={user} getToken={getToken} />
-                : <Redirect to='/' />
+                : <Redirect to='/home' />
             }
           </Route>
         </Switch>

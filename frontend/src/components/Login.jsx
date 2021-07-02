@@ -13,15 +13,15 @@ function Login({ checkToken }) {
       .post("http://localhost:5000/api/login/check", { code })
       .then((res) => {
         localStorage.setItem('token', res.data.token)
-        history.push("/");
+        history.push("/home");
         checkToken()
       })
       .catch(error => console.log(error))
   }, [])
 
   return (
-    <div>
-      Loading...
+    <div className="login">
+      <h1>Loading...</h1>
     </div>
   )
 }

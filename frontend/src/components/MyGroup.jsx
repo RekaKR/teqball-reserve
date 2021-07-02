@@ -44,7 +44,7 @@ function MyGroup({ user, group, setNewRoleResponse, getToken }) {
 
   return (
     <div className="group">
-      <p>{group.name}</p>
+      <h3>{group.name}</h3>
 
       <div>
         <p>Members:</p>
