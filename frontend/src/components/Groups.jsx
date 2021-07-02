@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { v4 as uuidv4 } from 'uuid'
 
 function Groups({ user, getToken }) {
   const [groups, setGroups] = useState()
@@ -26,24 +27,24 @@ function Groups({ user, getToken }) {
     <div>
       Groups
       <div className="groups">
-        {
-          response &&
-          <p>{response}</p>
-        }
+        {response && <p>{response}</p>}
 
         {
-          groups && groups.map((group, i) =>
-            <div key={i} className="group">
+          groups &&
+          groups.map((group) =>
+            <div key={uuidv4()} className="group">
               <p>{group.name}</p>
               <p>Members:</p>
 
               <div>
-                {group.members.map((member, index) =>
-                  <div key="index" className="member">
-                    <img src={member.picture} alt="profile" className="profile-picture" />
-                    <p>{member.name}</p>
-                    <p>{member.groupRole}</p>
-                  </div>)
+                {
+                  group.members.map((member) =>
+                    <div key={uuidv4()} className="member">
+                      <img src={member.picture} alt="profile" className="profile-picture" />
+                      <p>{member.name}</p>
+                      <p>{member.groupRole}</p>
+                    </div>
+                  )
                 }
               </div>
 

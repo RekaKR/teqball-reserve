@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
+import { v4 as uuidv4 } from 'uuid'
 import GoogleMap from './GoogleMap'
 
 function Event({ event, user, setParticipationResponse, getToken }) {
@@ -37,10 +38,10 @@ function Event({ event, user, setParticipationResponse, getToken }) {
       <div className="basic-info">
         <p>{event.title}</p>
 
-        <p>
+        <div>
           {event.venue}
           <button onClick={() => setShowMap(true)}>Térkép</button>
-        </p>
+        </div>
 
         {showMap && <GoogleMap setShowMap={setShowMap} venue={event.venue} />}
 
@@ -72,21 +73,24 @@ function Event({ event, user, setParticipationResponse, getToken }) {
 
           <p>Accepted: </p>
           {
-            event.members.filter(member => member.participation === "accepted").map(member =>
-              <div className="member">
-                <img src={member.picture} alt="profile"
-                  className="profile-picture" />
-                <p>{member.name}</p>
-              </div>)
+            event.members.filter(member => member.participation === "accepted")
+              .map(member =>
+                <div key={uuidv4()} className="member">
+                  <img src={member.picture} alt="profile" className="profile-picture" />
+                  <p>{member.name}</p>
+                </div>
+              )
           }
 
           <p>Denied: </p>
           {
-            event.members.filter(member => member.participation === "denied").map(member =>
-              <div className="member">
-                <img src={member.picture} alt="profile" className="profile-picture" />
-                <p>{member.name}</p>
-              </div>)
+            event.members.filter(member => member.participation === "denied")
+              .map(member =>
+                <div key={uuidv4()} className="member">
+                  <img src={member.picture} alt="profile" className="profile-picture" />
+                  <p>{member.name}</p>
+                </div>
+              )
           }
         </div>
       }

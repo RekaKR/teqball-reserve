@@ -16,54 +16,40 @@ function Home({ setUser, user }) {
   }
 
   return (
-    <div>
-
+    <div className="header">
       {
-        !user &&
-        <button onClick={googleSignIn}>
-          Login
-        </button>
-      }
+        user
+          ? <>
+            <button onClick={logout}>
+              <Link to='/'>
+                Logout
+              </Link>
+            </button>
 
-      {
-        user &&
-        <button onClick={logout}>
-          <Link to='/'>
-            Logout
-          </Link>
-        </button>
-      }
+            <button>
+              <Link to='/groups'>
+                Groups
+              </Link>
+            </button>
 
-      {
-        user &&
-        <button>
-          <Link to='/groups'>
-            Groups
-          </Link>
-        </button>
-      }
+            <button>
+              <Link to='/my-groups'>
+                My groups
+              </Link>
+            </button>
 
-      {
-        user &&
-        <button>
-          <Link to='/my-groups'>
-            My groups
-          </Link>
-        </button>
-      }
+            <button>
+              <Link to='/my-all-event'>
+                My all event
+              </Link>
+            </button>
 
-      {
-        user &&
-        <button>
-          <Link to='/my-all-event'>
-            My all event
-          </Link>
-        </button>
-      }
+            <span>Logged in as {user.name}</span>
+          </>
 
-      {
-        user &&
-        <span>Logged in as {user.name}</span>
+          : <button onClick={googleSignIn}>
+            Login
+          </button>
       }
     </div>
   )

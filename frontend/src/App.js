@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import './App.scss';
+import './style/style.scss';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import Home from './components/Home'
 import Login from './components/Login'
@@ -10,8 +10,6 @@ import jwt_decode from 'jwt-decode'
 
 function App() {
   const [user, setUser] = useState("")
-
-  console.log(user)
 
   const getToken = () => {
     return {
@@ -35,7 +33,7 @@ function App() {
 
 
   return (
-    <div >
+    <div className="app">
       <Router>
 
         <Route path='/' >
