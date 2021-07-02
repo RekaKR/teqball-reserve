@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import './style/style.scss';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
-import Home from './components/Home'
+import jwt_decode from 'jwt-decode'
+import './style/style.scss';
+import Header from './components/Header'
 import Login from './components/Login'
 import MyGroups from './components/MyGroups'
 import Groups from './components/Groups'
 import MyAllEvent from './components/MyAllEvent'
-import jwt_decode from 'jwt-decode'
+import Homepage from './components/Homepage'
 
 function App() {
   const [user, setUser] = useState("")
@@ -37,15 +38,17 @@ function App() {
       <Router>
 
         <Route path='/' >
-          <Home setUser={setUser} user={user} />
+          <Header setUser={setUser} user={user} />
         </Route>
 
         <Switch>
-
           <Route path='/login'>
             <Login checkToken={checkToken} />
           </Route>
 
+          <Route path='/home'>
+            <Homepage />
+          </Route>
 
           <Route path='/groups'>
             {
@@ -70,9 +73,7 @@ function App() {
                 : <Redirect to='/' />
             }
           </Route>
-
         </Switch>
-
       </Router >
     </div>
   );
