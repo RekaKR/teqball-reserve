@@ -1,5 +1,6 @@
+require("dotenv").config()
 var jwt = require('jsonwebtoken');
-const LoginController = require("./controllers/LoginController");
+
  
  function verifyToken(req, res, next) {
     const bearerHeader = req.headers['authorization']
@@ -7,7 +8,7 @@ const LoginController = require("./controllers/LoginController");
     if (typeof bearerHeader !== 'undefined') {
         const bearerToken = bearerHeader.split(' ')[1]
 
-        jwt.verify(bearerToken, LoginController.secret, async (err, authData) => {
+        jwt.verify(bearerToken, process.env.JWT_SECRET, async (err, authData) => {
             if (err) {
                 res.status(403).json({
                     msg: 'Forbidden',

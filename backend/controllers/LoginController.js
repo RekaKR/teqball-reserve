@@ -1,20 +1,10 @@
-var jwt = require('jsonwebtoken');
-const secret = 'supersecret'
+require("dotenv").config()
+const jwt = require('jsonwebtoken');
 const AuthEntityService = require("../services/AuthEntityService");
 const fetch = require('node-fetch')
 const jwt_decode = require("jwt-decode");
-const { google } = require('googleapis');
+const {oAuth2Client, SCOPES} = require('../GoogleSetup')
 
-const SCOPES = [
-    "https://www.googleapis.com/auth/calendar",
-    "https://www.googleapis.com/auth/userinfo.profile",
-    "https://www.googleapis.com/auth/userinfo.email",
-    "openid",
-];
-
-const oAuth2Client = new google.auth.OAuth2(
-    "645622545318-54bkra0rued7ajsn83sj3rdh0nik2fk9.apps.googleusercontent.com", "Kg3RyJ3wWM3Vj6qAhbEROwkF", 'http://localhost:3000/login'
-);
 
 async function googleSetup(req, res) {
 
@@ -61,7 +51,7 @@ async function checkingUser(token, res) {
         "email": email,
         "picture": picture,
         "refresh_token": token.refresh_token
-    }, secret, { expiresIn: '1h' },
+    }, process.env.JWT_SECRET, { expiresIn: '1h' },
         function (err, token) {
             res.json({ token: token })
         });
@@ -71,5 +61,4 @@ async function checkingUser(token, res) {
 
 exports.googleSetup = googleSetup;
 exports.checkingLogin = checkingLogin;
-exports.secret = secret;
 

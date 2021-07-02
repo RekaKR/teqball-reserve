@@ -1,10 +1,9 @@
+require("dotenv").config()
 const GroupService = require("../services/GroupService");
 const AuthEntityService = require("../services/AuthEntityService");
 const EventService = require("../services/EventService");
 const { google } = require('googleapis');
-const oAuth2Client = new google.auth.OAuth2(
-    "645622545318-54bkra0rued7ajsn83sj3rdh0nik2fk9.apps.googleusercontent.com", "Kg3RyJ3wWM3Vj6qAhbEROwkF", 'http://localhost:3000/login'
-);
+const {oAuth2Client} = require('../GoogleSetup')
 
 
 async function getGroups(req, res) {
