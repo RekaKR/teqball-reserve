@@ -34,14 +34,19 @@ function MyGroup({ user, group, setNewRoleResponse, getToken }) {
             .then(res => setNewRoleResponse(res.data))
     }
 
+
+// Norbi - user email küldése a naptárból 
     const quitGroup = () => {
         axios
         .post("http://localhost:5000/api/groups/quit", {
             groupId: group._id,
             googleId: user.google,
+            email: user.email
         }, getToken())
         .then(res => setNewRoleResponse(res.data))
     }
+
+    console.log(user)
 
     return (
         <div className="group">

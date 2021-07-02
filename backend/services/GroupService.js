@@ -79,12 +79,23 @@ async function  insertMember (data) {
 }
 
 async function  deleteGroupMember (groupId, googleId) {
+    
     try {
         const group = await Group.updateOne(
             { _id: groupId }, 
             { $pull: { members: { googleId: googleId } } },
           )
-        return  group
+// Norbi - kiszedem a calendarid-t a csoportból
+
+        const groupForCalendar = await Group.findOne({_id: groupId})
+        const calendarData = {}
+        calendarData.calendarId = groupForCalendar.calendarId
+        calendarData.refresh_token = groupForCalendar.refresh_token
+        console.log(groupForCalendar)
+        // return  group
+        return  {group, groupForCalendar}
+// ---------------------------------------------
+
     } catch (error) {
         console.log(`Could not fetch group ${error}`)
     }

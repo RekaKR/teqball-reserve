@@ -2,8 +2,14 @@ const GroupService = require("../services/GroupService");
 const AuthEntityService = require("../services/AuthEntityService");
 const EventService = require("../services/EventService");
 const { google } = require('googleapis');
+// const oAuth2Client = new google.auth.OAuth2(
+//     "645622545318-54bkra0rued7ajsn83sj3rdh0nik2fk9.apps.googleusercontent.com", "Kg3RyJ3wWM3Vj6qAhbEROwkF", 'http://localhost:3000/login'
+// );
+
 const oAuth2Client = new google.auth.OAuth2(
-    "645622545318-54bkra0rued7ajsn83sj3rdh0nik2fk9.apps.googleusercontent.com", "Kg3RyJ3wWM3Vj6qAhbEROwkF", 'http://localhost:3000/login'
+    "498850833112-nriqbtbfbke2mc1f90s4uvrbk0ehi9g9.apps.googleusercontent.com",
+    "Y5PtJP9KtV-eUm5GtVecUaVw",
+    'http://localhost:3000/login'
 );
 
 
@@ -97,6 +103,7 @@ async function createGoogleGroup(name, refresh_token) {
                 resource: newCalendar
             }
         )
+        console.log(calendarGroup)
         const calendarId = calendarGroup.data.id
         return calendarId
 
@@ -111,6 +118,8 @@ async function quitGroup(req, res) {
         const googleId = req.body.googleId
 
         const group = await GroupService.deleteGroupMember(groupId, googleId)
+// Norbi - kérdés, mást returnölünk
+        // console.log(group)
         if (!group) {
             res.status(400).json({
                 msg: 'Something went wrong!',
@@ -118,8 +127,72 @@ async function quitGroup(req, res) {
         }
 
         const updatedUser = await AuthEntityService.removeGroup(googleId, groupId)
-
+        
         const updateEvents = await EventService.removeMember(groupId, googleId)
+
+// Norbi - a kilépő tag törlése a csapat naptárából
+
+    const authToken = { refresh_token: group.groupForCalendar.refresh_token }
+    oAuth2Client.setCredentials(authToken)
+
+    const calendar = google.calendar({ version: 'v3', auth: oAuth2Client })
+
+        await calendar.acl.delete({
+            auth: oAuth2Client,
+            calendarId: group.groupForCalendar.calendarId,
+            ruleId: `user:${req.body.email}`
+        });
+
+// calendar mailjeinek ápdételése
+
+    const attendees  = group.groupForCalendar.members.map(member => {
+            return {email: member.email}
+        })
+
+        console.log(attendees)
+
+    const events = await calendar.events.list({
+            calendarId: group.groupForCalendar.calendarId,
+            timeMin: (new Date()).toISOString()
+        })
+
+         const eventsArr = events.data.items
+
+        const updatedAllEvents = async (eventsArr) => {
+
+            await asyncForEach(eventsArr, async (event) => {
+            await updateCalendarEvent(event)
+            })
+
+            console.log("az összes események frissítve");
+        }
+
+        const asyncForEach = async (eventsArr, callback) => {
+            for (let index = 0; index < eventsArr.length; index++) {
+                await callback(eventsArr[index], index, eventsArr);
+            }
+        }
+
+        const updateCalendarEvent = (event) => {
+            const newMails = {
+                attendees: attendees
+            };
+
+            const updatedEvent = calendar.events.patch({
+                auth: oAuth2Client,
+                calendarId: group.groupForCalendar.calendarId,
+                eventId: event.id,
+                sendUpdates: "all",
+                resource: newMails
+            })
+
+            console.log("esemény frissítve")
+
+        }
+
+        updatedAllEvents(eventsArr)
+
+// --------------------------------------------------
 
         res.json({ msg: "Update was successful." })
     } catch (error) {
@@ -148,8 +221,9 @@ async function insertMember(req, res) {
             participation: ""
         }
         await EventService.insertMember(data.groupId, newMember)
-
-        await joinGoogleGroup(group.refresh_token, data.email, group.calendarId)
+// Norbi
+        await joinGoogleGroup(group.refresh_token, data.email, group.calendarId, group)
+        // await joinGoogleGroup(group.refresh_token, data.email, group.calendarId)
 
         res.json({ msg: "Group successfully updated!" })
     } catch (error) {
@@ -157,7 +231,15 @@ async function insertMember(req, res) {
     }
 }
 
-async function joinGoogleGroup(refresh_token, email, calendarId) {
+async function joinGoogleGroup(refresh_token, email, calendarId, group) {
+
+// Norbi - tagok email-jei a frissítéshez
+    const attendees  = group.members.map(member => {
+        return {email: member.email}
+    })
+    attendees.push({email: email})
+// -----------------------------------
+
     const authToken = { refresh_token: refresh_token }
     oAuth2Client.setCredentials(authToken)
 
@@ -171,13 +253,60 @@ async function joinGoogleGroup(refresh_token, email, calendarId) {
         }
     }
     try {
-        calendar.acl.insert(
+
+// Norbi
+        // calendar.acl.insert(
+        await calendar.acl.insert(
             {
               auth: oAuth2Client,
               calendarId: calendarId,
               resource: newMember
             }
         )
+
+// Norbi - események ápdéttelése
+        const events = await calendar.events.list({
+            calendarId: calendarId,
+            timeMin: (new Date()).toISOString()
+        })
+
+        const eventsArr = events.data.items
+
+        const updatedAllEvents = async (eventsArr) => {
+
+            await asyncForEach(eventsArr, async (event) => {
+            await updateCalendarEvent(event)
+            })
+
+            console.log("az összes események frissítve");
+        }
+
+        const asyncForEach = async (eventsArr, callback) => {
+            for (let index = 0; index < eventsArr.length; index++) {
+                await callback(eventsArr[index], index, eventsArr);
+            }
+        }
+
+        const updateCalendarEvent = (event) => {
+            const newMails = {
+                attendees: attendees
+            };
+
+            const updatedEvent = calendar.events.patch({
+                auth: oAuth2Client,
+                calendarId: calendarId,
+                eventId: event.id,
+                sendUpdates: "all",
+                resource: newMails
+            })
+
+            console.log("esemény frissítve")
+
+        }
+
+        updatedAllEvents(eventsArr)
+
+// ---------------------------------------------------
         return true
 
     } catch (err) {
