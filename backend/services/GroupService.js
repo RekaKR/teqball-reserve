@@ -11,6 +11,7 @@ async function  getGroups () {
 }
 
 async function  getGroupById (groupId) {
+    // console.log(groupId)
     try {
         const group = Group.findOne({_id: groupId})
         return  group

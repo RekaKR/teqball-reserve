@@ -37,6 +37,10 @@ const eventSchema = Schema({
             participation: String
         }
     ],
+    
+    calendarEventId: {
+        type: String,
+    },
 
 });
 
