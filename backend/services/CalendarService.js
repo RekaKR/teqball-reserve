@@ -1,4 +1,8 @@
 const { google } = require('googleapis');
+// const { google } = require('googleapis');
+// const oAuth2Client = new google.auth.OAuth2(
+//     "645622545318-54bkra0rued7ajsn83sj3rdh0nik2fk9.apps.googleusercontent.com", "Kg3RyJ3wWM3Vj6qAhbEROwkF", 'http://localhost:3000/login'
+// );
 
 const oAuth2Client = new google.auth.OAuth2(
     "498850833112-nriqbtbfbke2mc1f90s4uvrbk0ehi9g9.apps.googleusercontent.com",
@@ -245,7 +249,9 @@ async function updateResponseStatus (userData, calendarId, members, refresh_toke
 
     const { calendarEventId, participation } = userData
 
-    console.log(userData)
+    // console.log(userData)
+    // console.log(members)
+
 
     oAuth2Client.setCredentials({ refresh_token: refresh_token })
 
@@ -274,6 +280,7 @@ async function updateResponseStatus (userData, calendarId, members, refresh_toke
                 }
 
             }
+
         } else {
             if(member.participation === ""){
 
@@ -285,7 +292,7 @@ async function updateResponseStatus (userData, calendarId, members, refresh_toke
             }else if (member.participation === "accepted"){
 
                 return {
-                        responseStatus: member.participation,
+                        responseStatus: "accepted",
                         email: member.email
                     }
 
@@ -303,6 +310,7 @@ async function updateResponseStatus (userData, calendarId, members, refresh_toke
     const newResponseStatus = {
         attendees: attendees
     }
+
  
     try {
         await calendar.events.patch({

@@ -6,12 +6,16 @@ function Event({ event, user, setParticipationResponse, getToken }) {
     const [isShowMore, setIsShowMore] = useState(false)
     const [showMap, setShowMap] = useState(false)
 
+    // console.log(user)
+    // console.log(event)
 
     const saveParticipation = (e) => {
         const participation = e.target.value
         axios
             .post("http://localhost:5000/api/events/update-participation", {
                 eventId: event._id,
+                calendarEventId: event.calendarEventId,
+                groupId: event.groupId,
                 participation: participation,
                 member: {
                     googleId: user.google,
