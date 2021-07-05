@@ -17,13 +17,15 @@ function MyAllEvent({ user, getToken }) {
     <div>
       <h2>My events</h2>
 
-      {
-        events &&
-        events.sort((a, b) => new Date(b.date) - new Date(a.date))
-          .map((event, i) =>
-            <Event key={uuidv4()} event={event} user={user} setParticipationResponse={setParticipationResponse} />
-          )
-      }
+      <div className="my-events">
+        {
+          events &&
+          events.sort((a, b) => new Date(b.date) - new Date(a.date))
+            .map((event, i) =>
+              <Event key={uuidv4()} event={event} user={user} setParticipationResponse={setParticipationResponse} />
+            )
+        }
+      </div>
     </div>
   )
 }

@@ -16,7 +16,7 @@ function MyGroups({ user, getToken }) {
   }, [isNewGroup, newRoleResponse])
 
   return (
-    <div>
+    <div className="my-groups">
       <div>
         <button onClick={() => setIsNewGroup(true)}>
           Create new group

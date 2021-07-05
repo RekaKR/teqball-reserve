@@ -38,14 +38,14 @@ function Event({ event, user, setParticipationResponse, getToken }) {
       <div className="basic-info">
         <p>{event.title}</p>
 
-        <div>
-          {event.venue}
-          <button onClick={() => setShowMap(true)}>Térkép</button>
+        <div className="map-container">
+          <p>{event.venue}</p>
+          <button onClick={() => setShowMap(true)}>Show in map</button>
         </div>
 
         {showMap && <GoogleMap setShowMap={setShowMap} venue={event.venue} />}
-
         <p>{event.date.slice(0, 10)} {event.date.slice(11, 16)}</p>
+
 
         <div>
           <label htmlFor="accept">Accept: </label>

@@ -24,7 +24,7 @@ function Groups({ user, getToken }) {
   }
 
   return (
-    <div>
+    <div className="groups-container">
       <h2>Groups</h2>
 
       <div className="groups">
@@ -34,9 +34,9 @@ function Groups({ user, getToken }) {
           groups &&
           groups.map((group) =>
             <div key={uuidv4()} className="group">
-              <p>{group.name}</p>
-              <p>Members:</p>
+              <h3>{group.name}</h3>
 
+              <p id="members-tag">Members:</p>
               <div>
                 {
                   group.members.map((member) =>

@@ -13,6 +13,14 @@ input {
 }
 
 button {
+  text-decoration: underline;
+  text-transform: uppercase;
   background-color: transparent;
   border: none;
+  outline: none;
+  cursor: pointer;
+  
+  :focus {
+    outline: 0;
+  }
 }

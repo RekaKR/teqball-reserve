@@ -47,7 +47,7 @@ function MyGroup({ user, group, setNewRoleResponse, getToken }) {
       <h3>{group.name}</h3>
 
       <div>
-        <p>Members:</p>
+        <p id="members-tag">Members:</p>
         {
           group.members.map((member) =>
             <div key={uuidv4()} className="member">
@@ -73,9 +73,6 @@ function MyGroup({ user, group, setNewRoleResponse, getToken }) {
 
       <div>
         <p>Upcoming events: </p>
-        {isAdmin && <button onClick={() => setIsNewEvent(true)}>Create new event</button>}
-
-        {isNewEvent && <NewEvent group={group} user={user} setIsNewEvent={setIsNewEvent} getToken={getToken} />}
 
         <div>
           {
@@ -86,6 +83,9 @@ function MyGroup({ user, group, setNewRoleResponse, getToken }) {
                 <Event key={uuidv4()} event={event} user={user} setParticipationResponse={setParticipationResponse} getToken={getToken} />)
           }
         </div>
+
+        {isAdmin && <button onClick={() => setIsNewEvent(true)}>Create new event</button>}
+        {isNewEvent && <NewEvent group={group} user={user} setIsNewEvent={setIsNewEvent} getToken={getToken} />}
       </div>
     </div>
 

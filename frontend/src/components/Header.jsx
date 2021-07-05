@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 function Home({ setUser, user }) {
-
   const logout = () => {
     localStorage.removeItem("token")
     setUser("")
@@ -53,7 +52,7 @@ function Home({ setUser, user }) {
                 </Link>
               </button>
 
-              <span className="header-button-link">Logged in as {user.name}</span>
+              <span className="header-button-link">Hi, {user.name}</span>
             </>
             : <>
               <button>
@@ -68,6 +67,8 @@ function Home({ setUser, user }) {
             </>
         }
       </div>
+
+      <p id="copyright">© T4 team, 2021</p>
     </div>
   )
 }
