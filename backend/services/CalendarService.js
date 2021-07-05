@@ -1,14 +1,13 @@
 const { google } = require('googleapis');
-// const { google } = require('googleapis');
-// const oAuth2Client = new google.auth.OAuth2(
-//     "645622545318-54bkra0rued7ajsn83sj3rdh0nik2fk9.apps.googleusercontent.com", "Kg3RyJ3wWM3Vj6qAhbEROwkF", 'http://localhost:3000/login'
-// );
-
 const oAuth2Client = new google.auth.OAuth2(
-    "498850833112-nriqbtbfbke2mc1f90s4uvrbk0ehi9g9.apps.googleusercontent.com",
-    "Y5PtJP9KtV-eUm5GtVecUaVw",
-    'http://localhost:3000/login'
+    "645622545318-54bkra0rued7ajsn83sj3rdh0nik2fk9.apps.googleusercontent.com", "Kg3RyJ3wWM3Vj6qAhbEROwkF", 'http://localhost:3000/login'
 );
+
+// const oAuth2Client = new google.auth.OAuth2(
+//     "498850833112-nriqbtbfbke2mc1f90s4uvrbk0ehi9g9.apps.googleusercontent.com",
+//     "Y5PtJP9KtV-eUm5GtVecUaVw",
+//     'http://localhost:3000/login'
+// );
 
 const calendar = google.calendar({ version: 'v3', auth: oAuth2Client })
 
@@ -141,7 +140,7 @@ async function updateAttendees (calendarId, refresh_token, newMember) {
 
         let attendees = event.attendees
         attendees.push(newMember)
-        console.log(newMember.email)
+        // console.log(newMember.email)
 
         const addNewMember = {
             role: "writer",

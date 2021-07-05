@@ -19,7 +19,7 @@ async function getEventsByGroupId(req, res) {
 }
 
 async function getEventsByGoogleId(req, res) {
-    console.log(req.params.googleId)
+    // console.log(req.params.googleId)
     try {
         const googleId = req.params.googleId
         const events = await EventService.getEventsByGoogleId(googleId)
@@ -50,7 +50,7 @@ async function insertEvent(req, res) {
         const updatedGroup = await GroupService.addNewEvent(event.groupId, newEvent._id) 
         const calendarEvent = await CalendarService.createGoogleEvent(req.body, updatedGroup.calendarId)
         
-        console.log(newEvent)
+        // console.log(newEvent)
         
         const updatedEvent = await EventService.updateEvent(newEvent._id, calendarEvent.data.id)  
         
@@ -76,7 +76,7 @@ async function updateParticipation(req, res) {
 
         const currentEvent = events.filter(event => event.calendarEventId === req.body.calendarEventId)
 
-        console.log(currentEvent[0].members)
+        // console.log(currentEvent[0].members)
         // console.log(currentEvent.members)
 
         await CalendarService.updateResponseStatus(req.body, group.calendarId, currentEvent[0].members, group.refresh_token )
