@@ -28,7 +28,8 @@ function Event({ event, user, setParticipationResponse, getToken }) {
   const checkDefaultValue = (value) => {
     const actualUser = event.members.find(member => member.googleId === user.google)
 
-    if (actualUser.participation === value) {
+  
+    if (actualUser?.participation === value) {
       return true
     } else {
       return false
