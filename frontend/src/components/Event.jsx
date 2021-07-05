@@ -28,7 +28,6 @@ function Event({ event, user, setParticipationResponse, getToken }) {
   const checkDefaultValue = (value) => {
     const actualUser = event.members.find(member => member.googleId === user.google)
 
-  
     if (actualUser?.participation === value) {
       return true
     } else {
@@ -49,8 +48,7 @@ function Event({ event, user, setParticipationResponse, getToken }) {
         {showMap && <GoogleMap setShowMap={setShowMap} venue={event.venue} />}
         <p>{event.date.slice(0, 10)} {event.date.slice(11, 16)}</p>
 
-
-        <div>
+        <div className="accepted-denied-dunno-container">
           <label htmlFor="accept">Accept: </label>
           <input type="radio" value="accepted" name={event._id} id="accept" onChange={saveParticipation} defaultChecked={checkDefaultValue("accepted")} />
 
@@ -61,7 +59,7 @@ function Event({ event, user, setParticipationResponse, getToken }) {
           <input type="radio" value="" name={event._id} id="dunno" onChange={saveParticipation} defaultChecked={checkDefaultValue("")} />
         </div>
 
-        <button onClick={() => setIsShowMore(!isShowMore)}>
+        <button className="show-more-less-button" onClick={() => setIsShowMore(!isShowMore)}>
           {isShowMore ? "Show less" : "Show more"}
         </button>
       </div>
@@ -70,8 +68,7 @@ function Event({ event, user, setParticipationResponse, getToken }) {
         isShowMore &&
         <div className="details">
           <div>
-            <p>Description: </p>
-            <p>{event.description}</p>
+            <p>Description: {event.description}</p>
           </div>
 
           <p>Accepted: </p>

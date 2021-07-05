@@ -113,12 +113,13 @@ body {
         min-height: 160px;
         color: $textColor;
         background-color: $headerBackgroundColor;
-        margin: 10px;
+        margin: 10px auto;
         padding: 14px;
         border-radius: 10px;
 
-        #members-tag {
+        .members-tag {
           margin: 10px 0;
+          font-size: 17px;
         }
 
         .member {
@@ -132,6 +133,28 @@ body {
             border-radius: 50%;
           }
         }
+
+        .create-event-container {
+          .input-container {
+            margin: 8px 0;
+            display: flex;
+            align-items: flex-start;
+            position: relative;
+            
+            label {
+              margin-right: 10px;
+            }
+
+            input,
+            textarea {
+              width: 34%;
+              min-height: 20px;
+              border-radius: 4px;
+              position: absolute;
+              left: 20%;
+            }
+          }
+        }
       }
     }
   }
@@ -141,7 +164,7 @@ body {
     background-color: $buttonColor;
     border: solid 1px $textColor;
     border-radius: 5px;
-    margin: 5px;
+    margin: 5px auto;
     padding: 10px;
   
     .basic-info {
@@ -155,6 +178,17 @@ body {
         button {
           margin-left: 5%;
         }
+      }
+
+      .accepted-denied-dunno-container {
+        input {
+          margin-right: 5px;
+        }
+      }
+
+      .show-more-less-button {
+        width: 90px;
+        margin-left: -5px;
       }
     }
   }

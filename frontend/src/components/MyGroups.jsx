@@ -18,6 +18,8 @@ function MyGroups({ user, getToken }) {
   return (
     <div className="my-groups">
       <div>
+        <h2>My groups</h2>
+
         <button onClick={() => setIsNewGroup(true)}>
           Create new group
         </button>

@@ -48,7 +48,7 @@ function MyGroup({ user, group, setNewRoleResponse, getToken }) {
       <h3>{group.name}</h3>
 
       <div>
-        <p id="members-tag">Members:</p>
+        <p className="members-tag">Members:</p>
         {
           group.members.map((member) =>
             <div key={uuidv4()} className="member">

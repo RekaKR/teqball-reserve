@@ -36,7 +36,7 @@ function Groups({ user, getToken }) {
             <div key={uuidv4()} className="group">
               <h3>{group.name}</h3>
 
-              <p id="members-tag">Members:</p>
+              <p className="members-tag">Members:</p>
               <div>
                 {
                   group.members.map((member) =>
