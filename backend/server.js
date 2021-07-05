@@ -11,9 +11,10 @@ const eventRoutes = require('./routes/EventRoutes')
 
 const mongoose = require('mongoose');
 
-mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
+/*mongoose.connect(`${url}teqball`, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });*/
 
 
 app.use(cors())

@@ -30,6 +30,22 @@ async function insertEvent(event) {
     }
 }
 
+async function updateEvent(eventId, calendarEventId) {
+
+    try {
+       
+        const updatedEvent = await Event.updateOne(
+            {  _id: eventId },
+            { $set: { 'calendarEventId': calendarEventId } }
+        )
+        
+        return updatedEvent
+    } catch (error) {
+        console.log(`Could not update event in DB ${error}`)
+    }
+    
+}
+
 async function updateParticipation(event) {
     try {
         const updatedEvent = await Event.updateOne(
@@ -56,13 +72,13 @@ async function insertMember(groupId, member) {
 
 async function removeMember(groupId, googleId) {
     try {
-        console.log(groupId, googleId)
+        // console.log(groupId, googleId)
         const member = await Event.updateMany(
             { groupId: groupId },
             { $pull: { members: { googleId: googleId } } },
             { multi: true}
         )
-        console.log(member)
+        // console.log(member)
         return member
     } catch (error) {
         console.log(`Could not fetch event ${error}`)
@@ -73,6 +89,7 @@ async function removeMember(groupId, googleId) {
 exports.getEventsByGroupId = getEventsByGroupId;
 exports.getEventsByGoogleId = getEventsByGoogleId;
 exports.insertEvent = insertEvent;
+exports.updateEvent = updateEvent;
 exports.updateParticipation = updateParticipation;
 exports.insertMember = insertMember;
 exports.removeMember = removeMember;

@@ -6,6 +6,12 @@ const jwt_decode = require("jwt-decode");
 const {oAuth2Client, SCOPES} = require('../GoogleSetup')
 
 
+// const oAuth2Client = new google.auth.OAuth2(
+//     "498850833112-nriqbtbfbke2mc1f90s4uvrbk0ehi9g9.apps.googleusercontent.com",
+//     "Y5PtJP9KtV-eUm5GtVecUaVw",
+//     'http://localhost:3000/login'
+// );
+
 async function googleSetup(req, res) {
 
     const authUrl = oAuth2Client.generateAuthUrl({

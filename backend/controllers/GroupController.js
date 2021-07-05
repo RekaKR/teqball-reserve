@@ -4,6 +4,7 @@ const AuthEntityService = require("../services/AuthEntityService");
 const EventService = require("../services/EventService");
 const { google } = require('googleapis');
 const {oAuth2Client} = require('../GoogleSetup')
+const CalendarService = require('../services/CalendarService')
 
 
 async function getGroups(req, res) {
@@ -62,7 +63,7 @@ async function insertGroup(req, res) {
         const newGroup = req.body
         const refresh_token = newGroup.refresh_token
 
-        const calendarId = await createGoogleGroup(newGroup.name, refresh_token)
+        const calendarId = await CalendarService.createGoogleCalendarGroup(newGroup.name, refresh_token)
 
         const groupToInsert = { ...newGroup, calendarId }
         const group = await GroupService.insertGroup(groupToInsert)
@@ -81,35 +82,13 @@ async function insertGroup(req, res) {
     }
 }
 
-async function createGoogleGroup(name, refresh_token) {
-
-    oAuth2Client.setCredentials({ refresh_token: refresh_token })
-    const calendar = google.calendar({ version: 'v3', auth: oAuth2Client })
-    const newCalendar = {
-        summary: name
-    }
-
-    try {
-        const calendarGroup = await calendar.calendars.insert(
-            {
-                auth: oAuth2Client,
-                resource: newCalendar
-            }
-        )
-        const calendarId = calendarGroup.data.id
-        return calendarId
-
-    } catch (error) {
-        console.log(error)
-    }
-}
-
 async function quitGroup(req, res) {
     try {
         const groupId = req.body.groupId
         const googleId = req.body.googleId
 
         const group = await GroupService.deleteGroupMember(groupId, googleId)
+        
         if (!group) {
             res.status(400).json({
                 msg: 'Something went wrong!',
@@ -117,8 +96,16 @@ async function quitGroup(req, res) {
         }
 
         const updatedUser = await AuthEntityService.removeGroup(googleId, groupId)
-
+        
         const updateEvents = await EventService.removeMember(groupId, googleId)
+
+        await CalendarService.removeMemberFromCalendarGroup(group.groupForCalendar.calendarId, req.body.email,  group.groupForCalendar.refresh_token)
+        
+        // const attendees  = group.groupForCalendar.members.map(member => {
+        //     return {email: member.email}
+        // })
+
+        // await CalendarService.updateAttendees(attendees, group.groupForCalendar.calendarId, group.groupForCalendar.refresh_token)
 
         res.json({ msg: "Update was successful." })
     } catch (error) {
@@ -146,9 +133,11 @@ async function insertMember(req, res) {
             picture: data.picture,
             participation: ""
         }
-        await EventService.insertMember(data.groupId, newMember)
 
-        await joinGoogleGroup(group.refresh_token, data.email, group.calendarId)
+        const mydata = await EventService.insertMember(data.groupId, newMember)
+        
+
+        const teamCalendar = await CalendarService.addMemberForCalendarGroup(group.refresh_token, data.email, group.calendarId, group)
 
         res.json({ msg: "Group successfully updated!" })
     } catch (error) {
@@ -156,33 +145,6 @@ async function insertMember(req, res) {
     }
 }
 
-async function joinGoogleGroup(refresh_token, email, calendarId) {
-    const authToken = { refresh_token: refresh_token }
-    oAuth2Client.setCredentials(authToken)
-
-    const calendar = google.calendar({ version: 'v3', auth: oAuth2Client })
-
-    const newMember = {
-        role: "writer",
-        scope: {
-            type: "user",
-            value: email
-        }
-    }
-    try {
-        calendar.acl.insert(
-            {
-              auth: oAuth2Client,
-              calendarId: calendarId,
-              resource: newMember
-            }
-        )
-        return true
-
-    } catch (err) {
-        console.log('There was an error contacting the Calendar service: ' + err);
-    }
-}
 
 async function updateMemberRole(req, res) {
     try {
